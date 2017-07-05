@@ -1,21 +1,18 @@
 /**
- * Created by apple on 17/7/3.
+ * Created by apple on 17/7/4.
  */
 import React, { Component } from 'react';
 import {
     StyleSheet,
     Text,
     View,
-    Button,
-    Platform
+    Button
 } from 'react-native';
-import pxToDp   from '../util/px';
 
-class User extends Component {
+class Login extends Component {
     static navigationOptions = {
         headerStyle:{
-            backgroundColor:'#ffb307',
-            height:pxToDp(Platform.OS === 'ios'?210:150)
+            backgroundColor:'#ffb307'
         },
         headerTitleStyle:{
             color:'white'
@@ -24,10 +21,10 @@ class User extends Component {
     render() {
         return (
             <View >
-                <Text>我是用户</Text>
+                <Text>我是登陆用户</Text>
             </View>
         );
     }
 }
 
-export default User;
+export default Login;

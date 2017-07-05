@@ -4,62 +4,43 @@
 import React, { Component } from 'react';
 import {
     StyleSheet,
-    Text,
-    View,
-    Button,
     Image
 } from 'react-native';
 import {
     StackNavigator,
     TabNavigator
 } from 'react-navigation';
-
+import pxToDp   from '../util/px';
 import BookCase from './bookCase';
 import BookCity from './bookCity';
 import User     from './user';
+import Login    from './login';
 
-import * as action from '../actions/app';
-import { connect } from 'react-redux';
-import Profile from '../components/test';
-
-class App extends Component {
-    static navigationOptions = {
-        title: '书架',
-    }
-    render() {
-        return (
-           <View style={styles.container}>
-               <Button
-                   onPress={() => this.props.navigation.navigate('Profile', {name: 'Lucy'})}
-                   title="Go to Lucy's profile"
-                   />
-           </View>
-        );
-    }
-}
 
 const MainScreenNavigator = TabNavigator({
     BookCase: {
         screen: BookCase,
         navigationOptions: {
-                tabBarLabel: '书架',
-                tabBarIcon: ({tintColor}) => (
-                    <Image
-                        source={require('../images/tab-book-select.png')}
-
-                        />
-                ),
+            title:"书架",
+            tabBarLabel: '书架',
+            tabBarIcon: ({focused,tintColor}) => (
+                <Image
+                    source={focused?require("../images/tab/tab-book-select.png"):require('../images/tab/tab-book.png')}
+                    style={styles.icon}
+                    />
+            ),
         },
 
     },
     BookCity: {
         screen: BookCity,
         navigationOptions: {
+            title:"书城",
             tabBarLabel: '书城',
-            tabBarIcon: ({tintColor}) => (
+            tabBarIcon: ({focused,tintColor}) => (
                 <Image
-                    source={require('../images/tab-user-select.png')}
-
+                    source={focused?require('../images/tab/tab-list-select.png'):require('../images/tab/tab-city.png')}
+                    style={styles.icon}
                     />
             ),
         },
@@ -68,10 +49,10 @@ const MainScreenNavigator = TabNavigator({
         screen: User,
         navigationOptions: {
             tabBarLabel: '用户',
-            tabBarIcon: ({tintColor}) => (
+            tabBarIcon: ({focused,tintColor}) => (
                 <Image
-                    source={require('../images/tab-user-select.png')}
-
+                    source={focused?require('../images/tab/tab-user-select.png'):require('../images/tab/tab-user.png')}
+                    style={styles.icon}
                     />
             ),
         },
@@ -88,9 +69,11 @@ const MainScreenNavigator = TabNavigator({
         indicatorStyle: {height: 0}, // android 中TabBar下面会显示一条线，高度设为 0 后就不显示线了
         style: {
             backgroundColor: '#f9f9f9', // TabBar 背景色
+            height:pxToDp(150)
         },
         labelStyle: {
-            fontSize: 14, // 文字大小
+            marginTop:pxToDp(4),
+            fontSize: pxToDp(30), // 文字大小
         },
     },
 });
@@ -99,42 +82,21 @@ const MainScreenNavigator = TabNavigator({
 
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#ffb307',
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
-    },
+    icon:{
+        height:pxToDp(70),
+        width:pxToDp(70),
+        resizeMode:"contain"
+    }
 });
 
-function mapStateToProps(state) {
-    console.log(state)
-    return state
-}
 
-function mapDispatchToProps(dispatch) {
-    return {
-
-    }
-}
 
 export default StackNavigator({
     Home: {
         screen: MainScreenNavigator,
     },
-    Profile: {
-        path: 'people/:name',
-        screen: Profile,
-    },
+    Login:{
+        screen:Login
+    }
 });
 
