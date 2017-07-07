@@ -6,12 +6,10 @@ import {
     StyleSheet,
     Text,
     View,
-    Image,
     Button
 } from 'react-native';
-import pxToDp     from '../util/px';
 
-class Login extends Component {
+class BookInfo extends Component {
     static navigationOptions = {
         headerStyle:{
             backgroundColor:'#ffb307'
@@ -23,23 +21,10 @@ class Login extends Component {
     render() {
         return (
             <View >
-                <Image
-                    source={require('../images/tab/userSelect.png')}
-                    style={styles.icon}
-                    />
+                <Text>我是登陆用户</Text>
             </View>
         );
     }
 }
 
-const styles = StyleSheet.create({
-    icon:{
-        height:pxToDp(90),
-        width:pxToDp(90),
-        padding:0,
-        margin:0,
-        borderRadius:0
-    }
-});
-
-export default Login;
+export default BookInfo;

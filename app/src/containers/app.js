@@ -10,11 +10,15 @@ import {
     StackNavigator,
     TabNavigator
 } from 'react-navigation';
-import pxToDp   from '../util/px';
-import BookCase from './bookCase';
-import BookCity from './bookCity';
-import User     from './user';
-import Login    from './login';
+import pxToDp     from '../util/px';
+import BookCase   from './bookCase';//书架
+import BookCity   from './bookCity';//书城
+import User       from './user';//用户
+import Login      from './login';//登陆
+import BookList   from './bookList';//书籍列表
+import BookInfo   from './bookInfo';//书籍介绍
+import Search     from './search';//书籍搜索
+import BookRead   from './bookRead';//阅读页
 
 
 const MainScreenNavigator = TabNavigator({
@@ -25,9 +29,9 @@ const MainScreenNavigator = TabNavigator({
             tabBarLabel: '书架',
             tabBarIcon: ({focused,tintColor}) => (
                 <Image
-                    source={focused?require("../images/tab/tab-book-select.png"):require('../images/tab/tab-book.png')}
+                    source={focused?require("../images/tab/bookSelect.png"):require('../images/tab/book.png')}
                     style={styles.icon}
-                    />
+                />
             ),
         },
 
@@ -39,7 +43,7 @@ const MainScreenNavigator = TabNavigator({
             tabBarLabel: '书城',
             tabBarIcon: ({focused,tintColor}) => (
                 <Image
-                    source={focused?require('../images/tab/tab-list-select.png'):require('../images/tab/tab-city.png')}
+                    source={focused?require('../images/tab/citySelect.png'):require('../images/tab/city.png')}
                     style={styles.icon}
                     />
             ),
@@ -51,7 +55,7 @@ const MainScreenNavigator = TabNavigator({
             tabBarLabel: '用户',
             tabBarIcon: ({focused,tintColor}) => (
                 <Image
-                    source={focused?require('../images/tab/tab-user-select.png'):require('../images/tab/tab-user.png')}
+                    source={focused?require('../images/tab/userSelect.png'):require('../images/tab/user.png')}
                     style={styles.icon}
                     />
             ),
@@ -83,9 +87,8 @@ const MainScreenNavigator = TabNavigator({
 
 const styles = StyleSheet.create({
     icon:{
-        height:pxToDp(70),
-        width:pxToDp(70),
-        resizeMode:"contain"
+        height:pxToDp(90),
+        width:pxToDp(90),
     }
 });
 
@@ -94,6 +97,27 @@ const styles = StyleSheet.create({
 export default StackNavigator({
     Home: {
         screen: MainScreenNavigator,
+    },
+    BookCase:{
+        screen:BookCase
+    },
+    BookCity:{
+        screen:BookCity
+    },
+    User:{
+        screen:User
+    },
+    BookList:{
+        screen:BookList
+    },
+    BookInfo:{
+        screen:BookInfo
+    },
+    Search:{
+        screen:Search
+    },
+    BookRead:{
+        screen:BookRead
     },
     Login:{
         screen:Login
