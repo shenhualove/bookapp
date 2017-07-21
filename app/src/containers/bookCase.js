@@ -8,53 +8,15 @@ import {
     View,
     FlatList,
     Image,
-    TouchableHighlight,
+    TouchableOpacity,
     Platform
 } from 'react-native';
+import {connect} from 'react-redux';
+const Realm = require('realm');
 import pxToDp   from '../util/px';
+import * as actions from '../actions/bookCase';
 
-const TestData = [
-                   {
-                    id:11,
-                    name:"杀破狼",
-                    readInfo:"尚未阅读"
-                   },
-                    {
-                        id:11,
-                        name:"杀破狼",
-                        readInfo:"阅读至第11章"
-                    },
-                    {
-                        id:11,
-                        name:"杀破狼",
-                        readInfo:"尚未阅读"
-                    },
-                    {
-                        id:11,
-                        name:"杀破狼",
-                        readInfo:"尚未阅读"
-                    },
-                    {
-                        id:11,
-                        name:"杀破狼",
-                        readInfo:"尚未阅读"
-                    },
-                    {
-                        id:11,
-                        name:"杀破狼",
-                        readInfo:"尚未阅读"
-                    },
-                    {
-                        id:11,
-                        name:"杀破狼",
-                        readInfo:"尚未阅读"
-                    },
-                    {
-                        id:"last"
-                    }
-                ]
-
-class BookCase extends Component {
+class Main extends Component {
     static navigationOptions = {
         headerStyle:{
             backgroundColor:'#ffb307',
@@ -65,8 +27,12 @@ class BookCase extends Component {
         },
     }
 
-    _tab(){
-        this.props.navigation.navigate("Login")
+    _tab(id){
+        if(id === 'last'){
+            this.props.navigation.navigate("BookCity")
+        }else{
+            this.props.navigation.navigate("BookRead")
+        }
     }
 
     _keyExtractor = (item, index) => item.id+index;
@@ -74,7 +40,7 @@ class BookCase extends Component {
     _renderItem = ({item})=>{
         if(item.id === 'last'){
             return (
-                <TouchableHighlight onPress={()=>this._tab(item.id)}>
+                <TouchableOpacity onPress={()=>this._tab(item.id)}>
                 <View key={item.id}  style={styles.bookView}>
                      <View style={styles.last}>
                          <Image
@@ -83,11 +49,11 @@ class BookCase extends Component {
                          />
                      </View>
                 </View>
-                </TouchableHighlight>
+                </TouchableOpacity>
             )
         }
         return (
-            <TouchableHighlight onPress={()=>this._tab(item.id)}>
+            <TouchableOpacity onPress={()=>this._tab(item.id)}>
             <View key={item.id}  style={styles.bookView}>
                     <Image
                        source={require('../images/book-test.jpg')}
@@ -96,7 +62,7 @@ class BookCase extends Component {
                     <Text style={styles.bookName}>{item.name}</Text>
                     <Text style={styles.readInfo}>{item.readInfo}</Text>
             </View>
-            </TouchableHighlight>
+            </TouchableOpacity>
         )
     }
     render() {
@@ -104,7 +70,7 @@ class BookCase extends Component {
             <View style={styles.container}>
                 <FlatList
                     style={styles.wrap}
-                    data={TestData}
+                    data={this.props.bookCase.list}
                     keyExtractor={this._keyExtractor}
                     numColumns={3}
                     renderItem={this._renderItem}
@@ -154,5 +120,23 @@ const styles = StyleSheet.create({
         height:pxToDp(110)
     }
 });
+
+function mapStateToProps(state){
+    return state;
+}
+
+
+function mapDispatchToProps(dispatch){
+    return {
+        _handle:(options)=>{
+            dispatch(actions.handle(options))
+        },
+    }
+}
+
+const BookCase = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Main);
 
 export default BookCase;

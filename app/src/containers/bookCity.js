@@ -8,73 +8,16 @@ import {
     View,
     FlatList,
     Image,
-    TouchableHighlight,
+    TouchableOpacity,
     ScrollView,
     Platform
 } from 'react-native';
+import {connect} from 'react-redux';
 import pxToDp   from '../util/px';
+import * as actions from '../actions/bookCity';
+import BookListComponent from '../components/bookList';
 
-const TestData = [
-    {
-        id:11,
-        imgUrl:"",
-        name:"外星失落的少女",
-        author:"默默",
-        info:"本是一个星球最尊贵的公主，却因为家族被掠夺者洗劫一空，而与亲人失去了联系，独自一人流落在一个荒岛之中，后来被神秘人阴差阳错的带往地球，最..."
-    },
-    {
-        id:121,
-        imgUrl:"",
-        name:"外星失落的少女",
-        author:"默默",
-        info:"本是一个星球最尊贵的公主，却因为家族被掠夺者洗劫一空，而与亲人失去了联系，独自一人流落在一个荒岛之中，后来被神秘人阴差阳错的带往地球，最..."
-    },
-    {
-        id:131,
-        imgUrl:"",
-        name:"外星失落的少女",
-        author:"默默",
-        info:"本是一个星球最尊贵的公主，却因为家族被掠夺者洗劫一空，而与亲人失去了联系，独自一人流落在一个荒岛之中，后来被神秘人阴差阳错的带往地球，最..."
-    },
-    {
-        id:141,
-        imgUrl:"",
-        name:"外星失落的少女",
-        author:"默默",
-        info:"本是一个星球最尊贵的公主，却因为家族被掠夺者洗劫一空，而与亲人失去了联系，独自一人流落在一个荒岛之中，后来被神秘人阴差阳错的带往地球，最..."
-    },
-    {
-        id:151,
-        imgUrl:"",
-        name:"外星失落的少女",
-        author:"默默",
-        info:"本是一个星球最尊贵的公主，却因为家族被掠夺者洗劫一空，而与亲人失去了联系，独自一人流落在一个荒岛之中，后来被神秘人阴差阳错的带往地球，最..."
-    },
-    {
-        id:161,
-        imgUrl:"",
-        name:"外星失落的少女",
-        author:"默默",
-        info:"本是一个星球最尊贵的公主，却因为家族被掠夺者洗劫一空，而与亲人失去了联系，独自一人流落在一个荒岛之中，后来被神秘人阴差阳错的带往地球，最..."
-    },
-    {
-        id:11,
-        imgUrl:"",
-        name:"外星失落的少女",
-        author:"默默",
-        info:"本是一个星球最尊贵的公主，却因为家族被掠夺者洗劫一空，而与亲人失去了联系，独自一人流落在一个荒岛之中，后来被神秘人阴差阳错的带往地球，最..."
-    },
-    {
-        id:171,
-        imgUrl:"",
-        name:"外星失落的少女",
-        author:"默默",
-        info:"本是一个星球最尊贵的公主，却因为家族被掠夺者洗劫一空，而与亲人失去了联系，独自一人流落在一个荒岛之中，后来被神秘人阴差阳错的带往地球，最..."
-    }
-
-]
-
-class BookCity extends Component {
+class Main extends Component {
     static navigationOptions = {
         headerStyle:{
             backgroundColor:'#ffb307',
@@ -83,33 +26,52 @@ class BookCity extends Component {
         headerTitleStyle:{
             color:'white'
         },
+        headerBackTitle:null,
         headerRight:(
-            <TouchableHighlight>
+            <TouchableOpacity onPress={()=>this.bookTab()}>
                 <Image
                    source={require("../images/search.png")}
                    style={{width:pxToDp(54),height:pxToDp(54),marginRight:pxToDp(50)}}
                 />
-            </TouchableHighlight>
+            </TouchableOpacity>
         ),
     }
 
-    _keyExtractor = (item, index) => item.id+index;
+    //热门推荐书籍点击
+    bookTab(id){
+        this.props.navigation.navigate("Search")
+        //this.props.navigation.navigate("BookInfo")
+    }
 
+    //分类点击
+    listTab(id){
+        this.props.navigation.navigate("BookList",{name:"玄幻武侠"})
+    }
+
+    //渲染分类数据
+    _renderColumn(){
+       return this.props.bookCity.columnList.map((item)=>{
+           return (
+               <TouchableOpacity key={item.id} onPress={()=>this.listTab(item.id)}>
+                   <View style={styles.columnView}>
+                       <Image
+                           source={item.imgUrl}
+                           style={styles.columnImage}
+                           />
+                       <Text style={styles.columnName}>{item.name}</Text>
+                   </View>
+               </TouchableOpacity>
+           )
+       })
+    }
+
+    _keyExtractor = (item, index) => item.id+index;
+    //渲染热门推荐书籍数据
     _renderItem = ({item})=>{
         return (
-            <TouchableHighlight >
-                <View key={item.id}  style={styles.listView}>
-                    <Image
-                        source={require('../images/column/test-2.jpg')}
-                        style={styles.listImage}
-                        />
-                    <View style={styles.rightView}>
-                        <Text style={styles.listName}>{item.name}</Text>
-                        <Text style={styles.listAuthor}>作者: {item.author}</Text>
-                        <Text style={styles.listInfo}>{item.info}</Text>
-                    </View>
-                </View>
-            </TouchableHighlight>
+            <TouchableOpacity onPress={()=>this.bookTab(item.id)}>
+                <BookListComponent data={item} />
+            </TouchableOpacity>
         )
     }
 
@@ -118,114 +80,7 @@ class BookCity extends Component {
             <ScrollView>
                 {/*栏目分类*/}
                 <View style={styles.columnWrap}>
-                <TouchableHighlight>
-                    <View style={styles.columnView}>
-                       <Image
-                           source={require("../images/column/qihuan.jpg")}
-                           style={styles.columnImage}
-                        />
-                        <Text style={styles.columnName}>玄幻魔法</Text>
-                    </View>
-                </TouchableHighlight>
-                <TouchableHighlight>
-                    <View style={styles.columnView}>
-                        <Image
-                            source={require("../images/column/gudai.jpg")}
-                            style={styles.columnImage}
-                            />
-                        <Text style={styles.columnName}>耽美同人</Text>
-                    </View>
-                </TouchableHighlight>
-                <TouchableHighlight>
-                    <View style={styles.columnView}>
-                        <Image
-                            source={require("../images/column/dushi.jpg")}
-                            style={styles.columnImage}
-                            />
-                        <Text style={styles.columnName}>都市言情</Text>
-                    </View>
-                </TouchableHighlight>
-                <TouchableHighlight>
-                    <View style={styles.columnView}>
-                        <Image
-                            source={require("../images/column/wuxia.jpg")}
-                            style={styles.columnImage}
-                            />
-                        <Text style={styles.columnName}>武侠修真</Text>
-                    </View>
-                </TouchableHighlight>
-                <TouchableHighlight>
-                    <View style={styles.columnView}>
-                        <Image
-                            source={require("../images/column/youxi.jpg")}
-                            style={styles.columnImage}
-                            />
-                        <Text style={styles.columnName}>游戏科幻</Text>
-                    </View>
-                </TouchableHighlight>
-                <TouchableHighlight>
-                    <View style={styles.columnView}>
-                        <Image
-                            source={require("../images/column/kongbu.jpg")}
-                            style={styles.columnImage}
-                            />
-                        <Text style={styles.columnName}>恐怖灵异</Text>
-                    </View>
-                </TouchableHighlight>
-                <TouchableHighlight>
-                    <View style={styles.columnView}>
-                        <Image
-                            source={require("../images/column/chuanyue.jpg")}
-                            style={styles.columnImage}
-                            />
-                        <Text style={styles.columnName}>穿越重生</Text>
-                    </View>
-                </TouchableHighlight>
-                <TouchableHighlight>
-                    <View style={styles.columnView}>
-                        <Image
-                            source={require("../images/column/junshi.jpg")}
-                            style={styles.columnImage}
-                            />
-                        <Text style={styles.columnName}>历史军事</Text>
-                    </View>
-                </TouchableHighlight>
-                <TouchableHighlight>
-                    <View style={styles.columnView}>
-                        <Image
-                            source={require("../images/column/xiaoyuan.jpg")}
-                            style={styles.columnImage}
-                            />
-                        <Text style={styles.columnName}>青春校园</Text>
-                    </View>
-                </TouchableHighlight>
-                <TouchableHighlight>
-                    <View style={styles.columnView}>
-                        <Image
-                            source={require("../images/column/lizhi.jpg")}
-                            style={styles.columnImage}
-                            />
-                        <Text style={styles.columnName}>成功励志</Text>
-                    </View>
-                </TouchableHighlight>
-                <TouchableHighlight>
-                    <View style={styles.columnView}>
-                        <Image
-                            source={require("../images/column/mingzhu.jpg")}
-                            style={styles.columnImage}
-                            />
-                        <Text style={styles.columnName}>传记名著</Text>
-                    </View>
-                </TouchableHighlight>
-                <TouchableHighlight>
-                    <View style={styles.columnView}>
-                        <Image
-                            source={require("../images/column/dushi.jpg")}
-                            style={styles.columnImage}
-                            />
-                        <Text style={styles.columnName}>其他</Text>
-                    </View>
-                </TouchableHighlight>
+                    {this._renderColumn()}
                 </View>
 
                 {/*热门推荐*/}
@@ -236,7 +91,7 @@ class BookCity extends Component {
                     </View>
                     <FlatList
                         style={styles.hotList}
-                        data={TestData}
+                        data={this.props.bookCity.hotList}
                         keyExtractor={this._keyExtractor}
                         renderItem={this._renderItem}
                         />
@@ -290,37 +145,25 @@ const styles = StyleSheet.create({
     hotText:{
         fontSize:pxToDp(42),
         color:"#333"
-    },
-    listView:{
-        marginTop:pxToDp(40),
-        marginBottom:pxToDp(40),
-        flexDirection:"row",
-    },
-    listImage:{
-        width:pxToDp(200),
-        height:pxToDp(266),
-        marginRight:pxToDp(36)
-    },
-    rightView:{
-        flexDirection:"column",
-    },
-    listName:{
-        fontSize:pxToDp(42),
-        color:"#333",
-        marginTop:pxToDp(4),
-        marginBottom:pxToDp(16)
-    },
-    listInfo:{
-        fontSize:pxToDp(34),
-        color:"#999",
-        marginBottom:0
-    },
-    listAuthor:{
-        fontSize:pxToDp(34),
-        color:"#999",
-        marginBottom:pxToDp(16)
     }
-
 });
+
+function mapStateToProps(state){
+    return state;
+}
+
+
+function mapDispatchToProps(dispatch){
+    return {
+        _handle:(options)=>{
+            dispatch(actions.handle(options))
+        },
+    }
+}
+
+const BookCity = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Main);
 
 export default BookCity;

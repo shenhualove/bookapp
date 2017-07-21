@@ -2,8 +2,18 @@
  * Created by apple on 17/7/3.
  */
 import { combineReducers} from 'redux';
-import app from './app';
+import bookCase from './bookCase';
+import bookCity from './bookCity';
+import bookList from './bookList';
+import bookInfo from './bookInfo';
+import search   from './search';
+import login   from './login';
 
 export default combineReducers({
-    app
+    bookCase,
+    bookCity,
+    bookList,
+    bookInfo,
+    search,
+    login
 })

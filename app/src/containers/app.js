@@ -73,11 +73,12 @@ const MainScreenNavigator = TabNavigator({
         indicatorStyle: {height: 0}, // android 中TabBar下面会显示一条线，高度设为 0 后就不显示线了
         style: {
             backgroundColor: '#f9f9f9', // TabBar 背景色
-            height:pxToDp(150)
+            height:pxToDp(160)
         },
         labelStyle: {
             marginTop:pxToDp(4),
-            fontSize: pxToDp(30), // 文字大小
+            marginBottom:pxToDp(10),
+            fontSize: pxToDp(34), // 文字大小
         },
     },
 });
