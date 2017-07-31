@@ -62,7 +62,7 @@ class Main extends Component {
                             <Text style={styles.smsText}>获取验证码</Text>
                         </TouchableOpacity>
                     </View>
-                    <TouchableOpacity style={styles.btn} >
+                    <TouchableOpacity style={[styles.btn,styles.activeBtn]} >
                         <Text style={styles.btnText}>登录</Text>
                     </TouchableOpacity>
                 </View>
@@ -124,15 +124,18 @@ const styles = StyleSheet.create({
     smsText:{
         color:"#ffb307",
         fontSize:pxToDp(44),
-        lineHeight:pxToDp(80)
+        //lineHeight:pxToDp(80)
     },
     btn:{
-        backgroundColor:"#ffb307",
+        backgroundColor:"#cccccc",
         height:pxToDp(140),
         flexDirection:"row",
         alignItems:"center",
         justifyContent:"center",
         borderRadius:pxToDp(12),
+    },
+    activeBtn:{
+        backgroundColor:"#ffb307",
     },
     btnText:{
         color:"white",

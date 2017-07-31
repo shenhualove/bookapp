@@ -16,7 +16,7 @@ const BookListComponent = (props) =>{
    return (
        <View key={props.data.id}  style={styles.listView}>
            <Image
-               source={require('../images/column/test-2.jpg')}
+               source={{uri:props.data.imgUrl}}
                style={styles.listImage}
                />
            <View style={styles.rightView}>
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     listInfo:{
         fontSize:pxToDp(34),
         color:"#999",
-        lineHeight:pxToDp(44),
+        //lineHeight:pxToDp(44),
         marginBottom:0,
     },
     listAuthor:{

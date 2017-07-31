@@ -18,7 +18,7 @@ import * as actions from '../actions/bookCity';
 import BookListComponent from '../components/bookList';
 
 class Main extends Component {
-    static navigationOptions = {
+    static navigationOptions = ({navigation}) => ({
         headerStyle:{
             backgroundColor:'#ffb307',
             height:pxToDp(Platform.OS === 'ios'?210:150)
@@ -28,31 +28,30 @@ class Main extends Component {
         },
         headerBackTitle:null,
         headerRight:(
-            <TouchableOpacity onPress={()=>this.bookTab()}>
+            <TouchableOpacity onPress={()=>navigation.navigate("Search")}>
                 <Image
                    source={require("../images/search.png")}
                    style={{width:pxToDp(54),height:pxToDp(54),marginRight:pxToDp(50)}}
                 />
             </TouchableOpacity>
         ),
-    }
+    })
 
     //热门推荐书籍点击
-    bookTab(id){
-        this.props.navigation.navigate("Search")
-        //this.props.navigation.navigate("BookInfo")
+    bookTab(id,name){
+        this.props.navigation.navigate("BookInfo",{id,name})
     }
 
     //分类点击
-    listTab(id){
-        this.props.navigation.navigate("BookList",{name:"玄幻武侠"})
+    listTab(name){
+        this.props.navigation.navigate("BookList",{name})
     }
 
     //渲染分类数据
     _renderColumn(){
        return this.props.bookCity.columnList.map((item)=>{
            return (
-               <TouchableOpacity key={item.id} onPress={()=>this.listTab(item.id)}>
+               <TouchableOpacity key={item.id} onPress={()=>this.listTab(item.name)}>
                    <View style={styles.columnView}>
                        <Image
                            source={item.imgUrl}
@@ -69,10 +68,14 @@ class Main extends Component {
     //渲染热门推荐书籍数据
     _renderItem = ({item})=>{
         return (
-            <TouchableOpacity onPress={()=>this.bookTab(item.id)}>
+            <TouchableOpacity onPress={()=>this.bookTab(item.id,item.name)}>
                 <BookListComponent data={item} />
             </TouchableOpacity>
         )
+    }
+
+    componentDidMount() {
+        this.props._getHot()
     }
 
     render() {
@@ -158,6 +161,9 @@ function mapDispatchToProps(dispatch){
         _handle:(options)=>{
             dispatch(actions.handle(options))
         },
+        _getHot:()=>{
+            dispatch(actions.getHot())
+        }
     }
 }
 

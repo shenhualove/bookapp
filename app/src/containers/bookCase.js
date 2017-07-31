@@ -12,7 +12,6 @@ import {
     Platform
 } from 'react-native';
 import {connect} from 'react-redux';
-const Realm = require('realm');
 import pxToDp   from '../util/px';
 import * as actions from '../actions/bookCase';
 

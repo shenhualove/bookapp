@@ -19,34 +19,36 @@ import * as actions from '../actions/bookList';
 import BookListComponent from '../components/bookList';
 
 class Main extends Component {
-    static navigationOptions = {
+    static navigationOptions = ({navigation}) => ({
         headerStyle:{
             backgroundColor:'#ffb307',
             height:pxToDp(Platform.OS === 'ios'?210:150)
         },
-        headerTitle:({ state }) => `${state.params.name}`,
+        headerTitle:`${navigation.state.params.name}`,
         headerTintColor:"white",
         headerBackTitle:null,
-    }
+    })
 
     //列表书籍点击
-    listTab(id){
-        this.props.navigation.navigate("BookInfo")
+    listTab(id,name){
+        this.props.navigation.navigate("BookInfo",{name,id})
     }
 
     _keyExtractor = (item, index) => item.id+index;
     //渲染热门推荐书籍数据
     _renderItem = ({item})=>{
         return (
-            <TouchableOpacity onPress={()=>this.listTab(item.id)}>
+            <TouchableOpacity onPress={()=>this.listTab(item.id,item.name)}>
                 <BookListComponent data={item} />
             </TouchableOpacity>
         )
     }
 
     componentDidMount() {
-        var {setParams} = this.props.navigation;
-        console.log(this.props.navigation)
+        this.props._getList({
+            nowPage:this.props.bookList.nowPage,
+            pageSize:this.props.bookList.pageSize
+        })
     }
 
     render() {
@@ -57,7 +59,7 @@ class Main extends Component {
                     data={this.props.bookList.list}
                     keyExtractor={this._keyExtractor}
                     renderItem={this._renderItem}
-                    />
+                />
             </View>
         );
     }
@@ -83,6 +85,9 @@ function mapDispatchToProps(dispatch){
     return {
         _handle:(options)=>{
             dispatch(actions.handle(options))
+        },
+        _getList:(options)=>{
+            dispatch(actions.getList(options))
         },
     }
 }

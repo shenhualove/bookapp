@@ -3,6 +3,8 @@
  *
  * 书城
  */
+import Fetch from '../util/fetch';
+
 export function handle(data){
     return {
         type:"BOOK_CITY_HANDLE",
@@ -16,6 +18,19 @@ export function getMenu(){
 }
 
 //获取热门书籍
-export function getHotBook(){
-
+export function getHot(){
+    return dispatch => {
+        Fetch({
+            url:"getHot",
+            type:"GET",
+            success:function(data){
+                console.log(data)
+                if(data.status==1){
+                    dispatch(handle({
+                        hotList:data.data
+                    }))
+                }
+            }
+        })
+    }
 }

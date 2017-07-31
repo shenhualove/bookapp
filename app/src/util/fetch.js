@@ -4,16 +4,19 @@
  * 网络请求
  */
 //接口域名
-const host="";
+const host="http://172.16.12.63:3000/";
 //接口URL集合
 const urls={
-    studyLinks  : "/studyLinks",//文档链接
-    friendLinks : "/friendLinks",//友情链接
-    columnList  : "/columnList",//栏目列表
-    hotRead     : "/hotRead",//推荐集合
-    newPush     : "/newPush",//最新发布列表
-    list        : "/list",//栏目列表页
-    page        : "/page",//栏目内容页
+    getList       : 'getBookList',//获取小说列表
+    getHot        : 'getHotList',//获取热门小说
+    getLove       : 'getLoveList',//获取猜你喜欢
+    bookInfo      : 'getBookInfo',//小说详情
+    getChapter    : 'getBookChapter',//小说章节目录
+    bookDetails   : 'getBookDetails',//获取章节的内容
+    search        : 'searchBook',//搜索小说
+    login         : 'login',//登陆
+    logOut        : 'logOut',//退出登陆
+    sendSms       : 'sendSmsCode',//发生短信
 };
 
 function Fetch(options){
@@ -23,11 +26,18 @@ function Fetch(options){
         headers:options.contentType === "multipart/form-data"?{}:{
             "Content-Type":options.contentType?options.contentType:"application/x-www-form-urlencoded"
         },//请求头部格式
-        body:options.data?sortKey(options.data,options.contentType):'' //发送数据
+        body:options.data&&options.type!=='GET'?sortKey(options.data,options.contentType):'' //发送数据
     }
 
     //初始化请求
-    let sendUrl=new Request(host+urls[options.url]);//构造请求资源
+    let sendUrl;
+    if(options.type==='GET'){
+        sendUrl=new Request(host+urls[options.url]+'?'+sortKey(options.data,options.contentType));//构造请求资源
+        console.log(sendUrl)
+    }else{
+        sendUrl=new Request(host+urls[options.url]);//构造请求资源
+    }
+
     fetch(sendUrl,sendHeader).then(function(res) {
         if (res.ok) {
             //成功返回数据

@@ -21,7 +21,7 @@ import * as actions from '../actions/bookInfo';
 import BookListComponent from '../components/bookList';
 
 class Main extends Component {
-    static navigationOptions = {
+    static navigationOptions = ({navigation}) => ({
         headerStyle:{
             backgroundColor:'#ffb307',
             height:pxToDp(Platform.OS === 'ios'?210:150)
@@ -31,17 +31,17 @@ class Main extends Component {
         },
         headerBackTitle:null,
         headerTintColor:"white",
-        headerTitle:"大宋提刑官"
-    }
+        headerTitle:`${navigation.state.params.name}`
+    })
 
     //书籍点击
-    bookTab(id){
-        this.props.navigation.navigate("BookInfo",{name:"玄幻武侠"})
+    bookTab(id,name){
+        this.props.navigation.navigate("BookInfo",{id,name})
     }
 
     //阅读书籍
     readTab(){
-        this.props.navigation.navigate("BookRead",{name:"玄幻武侠"})
+        this.props.navigation.navigate("BookRead",{id:this.props.navigation.state.params.id})
     }
 
     //加入书架
@@ -53,10 +53,18 @@ class Main extends Component {
     //渲染热门推荐书籍数据
     _renderItem = ({item})=>{
         return (
-            <TouchableOpacity onPress={()=>this.bookTab(item.id)}>
+            <TouchableOpacity onPress={()=>this.bookTab(item.id,item.name)}>
                 <BookListComponent data={item} />
             </TouchableOpacity>
         )
+    }
+
+    componentDidMount() {
+        this.props._bookInfo({
+            id:this.props.navigation.state.params.id
+        })
+
+        this.props._getLove()
     }
 
     render() {
@@ -66,13 +74,13 @@ class Main extends Component {
                 <View style={styles.columnWrap}>
                     <View style={styles.listView}>
                         <Image
-                            source={require('../images/column/test-2.jpg')}
+                            source={{uri:this.props.bookInfo.book.imgUrl}}
                             style={styles.listImage}
                         />
                         <View style={styles.rightView}>
-                            <Text style={styles.listName}>外形实录的少铝</Text>
-                            <Text style={styles.listAuthor}>作者: 神话</Text>
-                            <Text style={styles.listInfo} >章节: 共二十四章</Text>
+                            <Text style={styles.listName}>{this.props.bookInfo.book.name}</Text>
+                            <Text style={styles.listAuthor}>作者: {this.props.bookInfo.book.author}</Text>
+                            <Text style={styles.listInfo} >章节: 共{this.props.bookInfo.book.chapter}章</Text>
                             <View style={styles.btnView}>
                                 <TouchableOpacity
                                     style={styles.addBtn}
@@ -99,7 +107,7 @@ class Main extends Component {
                     </View>
                     <View>
                         <Text style={styles.content}>
-                            此处放置图书内容简介，此处放置图书内容简介此处放置图书内容简介，此处放置图书内容简介此处放置图书内容简介此处放置图书内容简介。此处放置图书内容简介此处放置图书内容简介。此处放置图书内容简介此处放置图书内容简介，此处放置图书内容简介......
+                            {this.props.bookInfo.book.content}
                         </Text>
                     </View>
                 </View>
@@ -151,7 +159,7 @@ const styles = StyleSheet.create({
     listInfo:{
         fontSize:pxToDp(40),
         color:"#999",
-        lineHeight:pxToDp(44),
+        //lineHeight:pxToDp(44),
         marginBottom:0,
     },
     listAuthor:{
@@ -181,7 +189,7 @@ const styles = StyleSheet.create({
         color:"#333"
     },
     content:{
-        lineHeight:pxToDp(70),
+        //lineHeight:pxToDp(70),
         fontSize:pxToDp(40),
         color:"#999",
         marginTop:pxToDp(15)
@@ -195,15 +203,15 @@ const styles = StyleSheet.create({
         borderWidth:1,
         borderColor:"#ffb307",
         padding:pxToDp(60),
-        paddingTop:pxToDp(36),
-        paddingBottom:pxToDp(36),
+        paddingTop:pxToDp(30),
+        paddingBottom:pxToDp(30),
         borderRadius:pxToDp(12),
     },
     readBtn:{
         backgroundColor:"#ffb307",
         padding:pxToDp(60),
-        paddingTop:pxToDp(36),
-        paddingBottom:pxToDp(36),
+        paddingTop:pxToDp(30),
+        paddingBottom:pxToDp(30),
         borderRadius:pxToDp(12),
     },
     addBtnText:{
@@ -224,6 +232,12 @@ function mapDispatchToProps(dispatch){
         _handle:(options)=>{
             dispatch(actions.handle(options))
         },
+        _bookInfo:(options)=>{
+            dispatch(actions.bookInfo(options))
+        },
+        _getLove:(options)=>{
+            dispatch(actions.getLove(options))
+        }
     }
 }
 

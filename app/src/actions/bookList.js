@@ -3,6 +3,8 @@
  *
  * 书籍列表页
  */
+import Fetch from '../util/fetch';
+
 export function handle(data){
     return {
         type:"BOOK_LIST_HANDLE",
@@ -11,6 +13,19 @@ export function handle(data){
 }
 
 //获取当前分类列表
-export function getList(){
-
+export function getList(options){
+    return dispatch => {
+        Fetch({
+            url:"getList",
+            type:"GET",
+            data:options,
+            success:function(data){
+                if(data.status==1){
+                    dispatch(handle({
+                        list:data.data
+                    }))
+                }
+            }
+        })
+    }
 }
