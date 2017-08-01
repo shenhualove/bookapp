@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     },
     bookText:{
         fontSize:pxToDp(48),
-        //lineHeight:pxToDp(84),
+        lineHeight:pxToDp(84),
         marginBottom:pxToDp(30)
     }
 

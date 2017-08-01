@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
         color:"#333"
     },
     content:{
-        //lineHeight:pxToDp(70),
+        lineHeight:pxToDp(70),
         fontSize:pxToDp(40),
         color:"#999",
         marginTop:pxToDp(15)

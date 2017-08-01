@@ -26,7 +26,7 @@ function Fetch(options){
         headers:options.contentType === "multipart/form-data"?{}:{
             "Content-Type":options.contentType?options.contentType:"application/x-www-form-urlencoded"
         },//请求头部格式
-        body:options.data&&options.type!=='GET'?sortKey(options.data,options.contentType):'' //发送数据
+        body:options.data&&options.type!=='GET'?sortKey(options.data,options.contentType):null //发送数据
     }
 
     //初始化请求

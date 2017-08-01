@@ -9,7 +9,7 @@ const deviceWidthDp = Dimensions.get('window').width;
 const uiWidthPx = 1080;
 
 function pxToDp(uiElementPx) {
-    return uiElementPx *  (deviceWidthDp / uiWidthPx);
+    return parseInt(uiElementPx *  (deviceWidthDp / uiWidthPx));
 }
 
 export default pxToDp;

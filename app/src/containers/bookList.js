@@ -105,8 +105,8 @@ const styles = StyleSheet.create({
         backgroundColor:"white",
     },
     list:{
-        padding:pxToDp(40),
-        paddingTop:0
+        paddingRight:pxToDp(40),
+        marginLeft:pxToDp(40)
     }
 });
 

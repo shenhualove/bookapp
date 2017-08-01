@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     smsText:{
         color:"#ffb307",
         fontSize:pxToDp(44),
-        //lineHeight:pxToDp(80)
+        lineHeight:pxToDp(80)
     },
     btn:{
         backgroundColor:"#cccccc",
