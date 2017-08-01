@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     listInfo:{
         fontSize:pxToDp(34),
         color:"#999",
-        //lineHeight:pxToDp(44),
+        lineHeight:pxToDp(44),
         marginBottom:0,
     },
     listAuthor:{

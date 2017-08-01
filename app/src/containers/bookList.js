@@ -17,6 +17,7 @@ import {connect} from 'react-redux';
 import pxToDp   from '../util/px';
 import * as actions from '../actions/bookList';
 import BookListComponent from '../components/bookList';
+import LoadingComponent  from '../components/loading';
 
 class Main extends Component {
     static navigationOptions = ({navigation}) => ({
@@ -35,6 +36,7 @@ class Main extends Component {
     }
 
     _keyExtractor = (item, index) => item.id+index;
+
     //渲染热门推荐书籍数据
     _renderItem = ({item})=>{
         return (
@@ -44,10 +46,37 @@ class Main extends Component {
         )
     }
 
-    componentDidMount() {
+    //下拉刷新
+    _onRefresh = ()=>{
+        if(!this.props.bookList.isLoadUpdate&&!this.props.bookList.isLoadMore){
+            this.getData("up")
+        }
+    }
+
+    //上提加载
+    _onEndReached = ()=>{
+        if(!this.props.bookList.isLoadUpdate&&!this.props.bookList.isLoadMore){
+            this.getData("more")
+        }
+    }
+
+    //请求数据，根据刷新的方式来加载不同请求
+    getData(text){
         this.props._getList({
             nowPage:this.props.bookList.nowPage,
-            pageSize:this.props.bookList.pageSize
+            pageSize:this.props.bookList.pageSize,
+            data:this.props.bookList.list,
+            text
+        })
+    }
+
+    componentDidMount() {
+        this.getData("up")
+    }
+
+    componentWillUnmount(){
+        this.props._handle({
+            list:[]
         })
     }
 
@@ -59,7 +88,12 @@ class Main extends Component {
                     data={this.props.bookList.list}
                     keyExtractor={this._keyExtractor}
                     renderItem={this._renderItem}
+                    refreshing={this.props.bookList.isLoadUpdate}
+                    onEndReached={this._onEndReached}
+                    onRefresh={this._onRefresh}
+                    onEndReachedThreshold={0.02}
                 />
+                {this.props.bookList.isLoadMore?<LoadingComponent />:null}
             </View>
         );
     }

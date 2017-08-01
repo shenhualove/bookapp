@@ -7,7 +7,8 @@ const initialSate = {
     list:[],
     nowPage:1,
     pageSize:10,
-    isLoad:false
+    isLoadUpdate:false,
+    isLoadMore:false
 }
 
 function bookList(state = initialSate,action){
