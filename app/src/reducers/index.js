@@ -6,6 +6,7 @@ import bookCase from './bookCase';
 import bookCity from './bookCity';
 import bookList from './bookList';
 import bookInfo from './bookInfo';
+import bookRead from './bookRead';
 import search   from './search';
 import login   from './login';
 
@@ -14,6 +15,7 @@ export default combineReducers({
     bookCity,
     bookList,
     bookInfo,
+    bookRead,
     search,
     login
 })

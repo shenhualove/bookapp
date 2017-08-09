@@ -30,16 +30,46 @@ class Main extends Component {
         headerTintColor:"white",
     }
 
+    //搜索书籍
+    search(){
+        if(!this.props.search.status){
+            this.props.search.searchVal&&this.props._search({val:this.props.search.searchVal})
+        }
+    }
+
     //列表书籍点击
-    listTab(id){
-        this.props.navigation.navigate("BookInfo")
+    listTab(id,name){
+        this.props.navigation.navigate("BookInfo",{id,name})
+    }
+
+    searchResult(){
+        let props=this.props.search;
+        if(props.list == null){
+            return false
+        }
+        if(props.list.length>0&&!props.status){
+            return(
+                <FlatList
+                    style={styles.list}
+                    data={this.props.search.list}
+                    keyExtractor={this._keyExtractor}
+                    renderItem={this._renderItem}
+                />
+            )
+        }
+        if(props.searchVal&&props.list.length==0){
+            return(
+                <Text style={styles.findText}>没有找到您要的书籍哦～</Text>
+            )
+        }
     }
 
     _keyExtractor = (item, index) => item.id+index;
+
     //渲染热门推荐书籍数据
     _renderItem = ({item})=>{
         return (
-            <TouchableOpacity onPress={()=>this.listTab(item.id)}>
+            <TouchableOpacity onPress={()=>this.listTab(item.id,item.name)}>
                 <BookListComponent data={item} />
             </TouchableOpacity>
         )
@@ -54,23 +84,17 @@ class Main extends Component {
                         maxLength={40}
                         underlineColorAndroid="transparent"
                         style={styles.textInput}
-                        value={this.props.search.input}
+                        onChangeText={(val)=>this.props._handle({searchVal:val})}
+                        value={this.props.search.searchVal}
                     />
-                    <TouchableOpacity onPress={()=>this.bookTab()}>
+                    <TouchableOpacity onPress={()=>this.search()}>
                         <Image
                             source={require("../images/login/sousuo.png")}
                             style={{width:pxToDp(54),height:pxToDp(54)}}
-                            />
+                        />
                     </TouchableOpacity>
                 </View>
-                <Text style={styles.findText}>没有找到您要的书籍哦～</Text>
-
-                {/*<FlatList
-                    style={styles.list}
-                    data={this.props.search.list}
-                    keyExtractor={this._keyExtractor}
-                    renderItem={this._renderItem}
-                    />*/}
+                {this.searchResult()}
             </View>
         );
     }
@@ -119,6 +143,9 @@ function mapDispatchToProps(dispatch){
         _handle:(options)=>{
             dispatch(actions.handle(options))
         },
+        _search:(options)=>{
+            dispatch(actions.search((options)))
+        }
     }
 }
 
