@@ -30,13 +30,17 @@ export function getList(options){
         Fetch({
             url:"getList",
             type:"GET",
-            data:options,
+            data:{
+                name:options.name,
+                nowPage:options.nowPage,
+                pageSize:options.pageSize
+            },
             success:function(data){
                 if(data.status==1){
                     if(options.text === 'up'){
                         dispatch(handle({
                             list:data.data,
-                            nowPage:1,
+                            nowPage:2,
                             isLoadUpdate:false
                         }))
                     }

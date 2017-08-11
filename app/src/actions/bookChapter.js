@@ -1,35 +1,34 @@
 /**
- * Created by apple on 2017/7/17.
+ * Created by apple on 2017/8/10.
  *
- * 小说阅读页
+ * 小说目录列表
  */
 import Fetch from '../util/fetch';
 
 export function handle(data){
     return {
-        type:"BOOK_READ_HANDLE",
+        type:"BOOK_CHAPTER_HANDLE",
         data
     }
 }
 
-//获取章节内容
-export function getBookDetails(options){
+//获取目录列表
+export function getChapter(options){
     return dispatch => {
         dispatch(handle({
-            loading:true,
-            chapter:options.pid
+            loading:true
         }))
 
         Fetch({
-            url:"bookDetails",
+            url:"getChapter",
             type:"GET",
-            data:options,
+            data:{
+                id:options.id
+            },
             success:function(data){
                 if(data.status==1){
-                    console.log(data)
                     dispatch(handle({
-                        content:data.data.content,
-                        title:data.data.title,
+                        list:data.data,
                         loading:false
                     }))
                 }

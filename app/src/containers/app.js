@@ -19,7 +19,7 @@ import BookList   from './bookList';//书籍列表
 import BookInfo   from './bookInfo';//书籍介绍
 import Search     from './search';//书籍搜索
 import BookRead   from './bookRead';//阅读页
-
+import BookChapter   from './bookChapter';//目录列表页
 
 const MainScreenNavigator = TabNavigator({
     BookCase: {
@@ -119,6 +119,9 @@ export default StackNavigator({
     },
     BookRead:{
         screen:BookRead
+    },
+    BookChapter:{
+        screen:BookChapter
     },
     Login:{
         screen:Login

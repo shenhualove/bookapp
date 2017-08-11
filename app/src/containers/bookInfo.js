@@ -41,7 +41,10 @@ class Main extends Component {
 
     //阅读书籍
     readTab(){
-        this.props.navigation.navigate("BookRead",{id:this.props.navigation.state.params.id})
+        this.props.navigation.navigate("BookRead",{
+            id:this.props.navigation.state.params.id,
+            name:this.props.navigation.state.params.name
+        })
     }
 
     //加入书架
@@ -49,7 +52,7 @@ class Main extends Component {
 
     }
 
-    _keyExtractor = (item, index) => item.id+index;
+    _keyExtractor = (item, index) => item.id;
     //渲染热门推荐书籍数据
     _renderItem = ({item})=>{
         return (
@@ -107,7 +110,7 @@ class Main extends Component {
                     </View>
                     <View>
                         <Text style={styles.content}>
-                            {this.props.bookInfo.book.content}
+                            {this.props.bookInfo.book.info}
                         </Text>
                     </View>
                 </View>

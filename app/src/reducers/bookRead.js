@@ -4,12 +4,14 @@
  * 小说阅读页
  */
 const initialSate = {
+    loading:false,//章节内容请求状态
     backStyle:0,//皮肤样式
-    fontSizeVal:50,//字体大小
+    fontSizeVal:20,//字体大小
     bookId:'',//小说ID
     bookName:'',//小说名字
-    chapter:1,//小说章节
+    chapter:1,//小说当前章节
     content:'',//章节内容
+    title:'',//章节标题
     showMenu:false,//显示菜单
     chapterSliderVal:0,//章节进度值
     lightVal:10,//屏幕亮度

@@ -14,6 +14,7 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback,
     Switch,
+    WebView,
     StatusBar
 } from 'react-native';
 import {connect} from 'react-redux';
@@ -21,6 +22,7 @@ import DeviceBattery from 'react-native-device-battery';
 import Slider from "react-native-slider";
 import * as actions from '../actions/bookRead';
 import pxToDp   from '../util/px';
+import readTemplate from '../util/readTemplate';
 
 const bookStyleArray = [
     {
@@ -85,8 +87,8 @@ class Main extends Component {
                             value={this.props.bookRead.fontSizeVal}
                             maximumTrackTintColor="#525967"
                             minimumTrackTintColor="#e8e3d4"
-                            minimumValue={30}
-                            maximumValue={100}
+                            minimumValue={12}
+                            maximumValue={40}
                             thumbTintColor="#e8e3d4"
                             thumbTouchSize={{width:pxToDp(40),height:pxToDp(40)}}
                             onSlidingComplete={(value) => this.props._handle({fontSizeVal:value})}
@@ -296,7 +298,7 @@ class Main extends Component {
     bottomNavTab(id){
         switch(id){
             case 1 :
-                this.props.navigation.navigate("Chapter")
+                this.props.navigation.navigate("BookChapter",{id:this.props.navigation.state.params.id})
                 break;
             case 2 :
                 this.props._handle({
@@ -318,6 +320,18 @@ class Main extends Component {
         }
     }
 
+    //获取章节内容
+    getData(pid){
+        this.props._getBookDetails({
+            id:this.props.navigation.state.params.id,
+            pid
+        })
+    }
+
+    componentDidMount() {
+        this.getData(1)
+    }
+
     componentWillUnmount(){
         this.props._handle({
             showMenu:false,
@@ -328,10 +342,13 @@ class Main extends Component {
     render() {
         const textStyle = {
             color:bookStyleArray[this.props.bookRead.backStyle].color,
-            fontSize:pxToDp(this.props.bookRead.fontSizeVal),
-            lineHeight:pxToDp(this.props.bookRead.fontSizeVal*2),
-            marginBottom:pxToDp(30)
         }
+        const html = readTemplate(
+            this.props.bookRead.content,
+            Dimensions.get('window').width,
+            this.props.bookRead.fontSizeVal,
+            textStyle.color
+        )
         return (
             <View style={styles.container}>
                 <StatusBar
@@ -344,44 +361,23 @@ class Main extends Component {
                 <View style={styles.readWrap}>
 
                     <View style={styles.topView}>
-                       <Text style={{color:textStyle.color}}>第一章    觉醒的武魂</Text>
-                       <Text style={{color:textStyle.color}}>绝世武魂</Text>
+                       <Text style={{color:textStyle.color}}>
+                           {this.props.bookRead.title}
+                       </Text>
+                       <Text style={{color:textStyle.color}}>
+                           {this.props.navigation.state.params.name}
+                       </Text>
                     </View>
-                    <ScrollView contentContainerStyle={styles.scroll}>
-                        <TouchableWithoutFeedback onPress={()=>this.touchContent()}>
-                        <View>
-                            <Text style={textStyle}>
-                                今年1月份，新开源的react-natvigation库备受瞩目。在短短不到3个月的时间，github上星数已达4000+。
-                                Fb推荐使用库，并且在React Native当前最新版本0.44中将Navigator删除。react-navigation据称有原生般的性能体验效果。
-                                可能会成为未来React Native导航组件的主流军。本篇内容基于【 ^1.0.0-beta.9 】版本来介绍关于该库的使用和实战技巧。
-                            </Text>
-                            <Text style={textStyle}>
-                                当我还在干保险的时候，我就接触了外卖小哥。市面上的外卖平台最牛的非美团莫属，其他的还有百度、饿了么，尚班族等。
-
-                                还记得那一天保险公司搞了个活动，需要利用中午的时间。于是我和同事合伙叫了美团外卖。在规定的时间以内（美团规定不超过40分钟）我们吃到了外卖，觉得还可以。
-
-                                由于我不好意思发展亲戚朋友做下线，所以我保险公司的业绩很差，我也不太喜欢保险公司发展下线，在熟人之间游弋的工作模式。所以我要了外卖小哥的微信号。
-
-                                通过和小哥聊天感觉干外卖并不差，一单赚个四块钱。一天跑个三十单，一个月三四千块钱养家糊口，够了。
-
-                                于是我二话没说报名干美团外卖，干了外卖才知道，我们不光要和竞争平台比服务。还要懂得更多关于客户的心理特征。
-                            </Text>
-                            <Text style={textStyle}>
-                                第三，你干了外卖就不要想再和狐朋狗友小聚小酌。因为你根本没有时间和朋友一起吃饭。说是一个月可以调休四天，其实大家除非遇到特发事件，否则都不调休。
-
-                                第四，你没有一个好的身体根本玩不转。小哥的时间绝对是争分夺秒的。不谈别的，我干了一个月瘦了七八斤，小肚子上的肥肉全部扔到路面和楼梯上了。因此你仔细观察干外卖的没几个胖子，这和当兵的差不多。偶尔见到胖子，一般也是值班的站长或者调度临时补充的。
-
-                                第五，干外卖是要玩车技的，不管电动车还是摩托车都必须赶着骑。实话告诉你，我一天闯五十个红灯算少的。所以外卖这一行，人员流动特别大。冬天舔着风雪，夏天顶着烈日。
-
-                                最关键的一点我留到最后说，那就是外卖得到差评是要被重重罚款的。这也是我今天重点要谈的。一般一个差评罚款一百块，具体金额视不同地区可能会有浮动，但我敢保证任何地方的美团外卖的差评罚款都不会低于五十元人民币一个！
-
-                                所以每一个美团外卖小哥都怕得到差评。我们这里一个月得到四个差评自动辞职。
-
-                                现在我来告诉你关于我离开美团外卖的这四个差评是怎么得的。
-                            </Text>
-                        </View>
-                        </TouchableWithoutFeedback>
-                    </ScrollView>
+                    <WebView
+                        automaticallyAdjustContentInsets={false}
+                        style={styles.scroll}
+                        source={{html: html}}
+                        onMessage={()=>this.touchContent()}
+                        javaScriptEnabled={true}
+                        domStorageEnabled={true}
+                        decelerationRate="normal"
+                        startInLoadingState={false}
+                    />
                     {this.props.bookRead.showMenu&&this.showTop()}
                     {this.props.bookRead.showMenu&&this.showBottom()}
                 </View>
@@ -435,7 +431,7 @@ const styles = StyleSheet.create({
         height:pxToDp(Platform.OS === 'ios'?210:150),
     },
     leftNav:{
-        width:pxToDp(60),
+        width:pxToDp(140),
         height:pxToDp(60),
         position:"absolute",
         bottom:pxToDp(40),
@@ -446,8 +442,7 @@ const styles = StyleSheet.create({
         height:pxToDp(60),
     },
     scroll:{
-        paddingLeft:pxToDp(50),
-        paddingRight:pxToDp(50)
+        backgroundColor:"transparent",
     },
     bookText:{
         fontSize:pxToDp(48),
@@ -565,8 +560,8 @@ function mapDispatchToProps(dispatch){
         _handle:(options)=>{
             dispatch(actions.handle(options))
         },
-        _getList:(options)=>{
-            dispatch(actions.getList(options))
+        _getBookDetails:(options)=>{
+            dispatch(actions.getBookDetails(options))
         },
     }
 }

@@ -9,6 +9,7 @@ import bookInfo from './bookInfo';
 import bookRead from './bookRead';
 import search   from './search';
 import login   from './login';
+import bookChapter from './bookChapter';
 
 export default combineReducers({
     bookCase,
@@ -16,6 +17,7 @@ export default combineReducers({
     bookList,
     bookInfo,
     bookRead,
+    bookChapter,
     search,
     login
 })

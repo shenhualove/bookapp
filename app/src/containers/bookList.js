@@ -35,7 +35,7 @@ class Main extends Component {
         this.props.navigation.navigate("BookInfo",{name,id})
     }
 
-    _keyExtractor = (item, index) => item.id+index;
+    _keyExtractor = (item, index) => item.id;
 
     //渲染热门推荐书籍数据
     _renderItem = ({item})=>{
@@ -63,6 +63,7 @@ class Main extends Component {
     //请求数据，根据刷新的方式来加载不同请求
     getData(text){
         this.props._getList({
+            name:this.props.navigation.state.params.name,
             nowPage:this.props.bookList.nowPage,
             pageSize:this.props.bookList.pageSize,
             data:this.props.bookList.list,
@@ -76,7 +77,11 @@ class Main extends Component {
 
     componentWillUnmount(){
         this.props._handle({
-            list:[]
+            list:[],
+            nowPage:1,
+            pageSize:10,
+            isLoadUpdate:false,
+            isLoadMore:false
         })
     }
 
@@ -111,6 +116,7 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state){
+    console.log(state.bookList.list)
     return state;
 }
 
