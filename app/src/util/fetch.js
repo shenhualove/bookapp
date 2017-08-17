@@ -13,6 +13,7 @@ const urls={
     bookInfo      : 'getBookInfo',//小说详情
     getChapter    : 'getBookChapter',//小说章节目录
     bookDetails   : 'getBookDetails',//获取章节的内容
+    downBook      : 'downBook',//下载小说
     search        : 'searchBook',//搜索小说
     login         : 'login',//登陆
     logOut        : 'logOut',//退出登陆

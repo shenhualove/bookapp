@@ -6,41 +6,6 @@
 const initialSate = {
     list:[
         {
-            id:11,
-            name:"杀破狼",
-            readInfo:"尚未阅读"
-        },
-        {
-            id:11,
-            name:"杀破狼",
-            readInfo:"阅读至第11章"
-        },
-        {
-            id:11,
-            name:"杀破狼",
-            readInfo:"尚未阅读"
-        },
-        {
-            id:11,
-            name:"杀破狼",
-            readInfo:"尚未阅读"
-        },
-        {
-            id:11,
-            name:"杀破狼",
-            readInfo:"尚未阅读"
-        },
-        {
-            id:11,
-            name:"杀破狼",
-            readInfo:"尚未阅读"
-        },
-        {
-            id:11,
-            name:"杀破狼",
-            readInfo:"尚未阅读"
-        },
-        {
             id:"last"
         }
     ]

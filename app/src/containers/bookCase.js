@@ -26,20 +26,20 @@ class Main extends Component {
         },
     }
 
-    _tab(id){
-        if(id === 'last'){
+    _tab(item){
+        if(item.id === 'last'){
             this.props.navigation.navigate("BookCity")
         }else{
-            this.props.navigation.navigate("BookRead")
+            this.props.navigation.navigate("BookRead",{pid:item.pid,id:item.id,name:item.name})
         }
     }
 
-    _keyExtractor = (item, index) => item.id+index;
+    _keyExtractor = (item, index) => item.id;
 
     _renderItem = ({item})=>{
         if(item.id === 'last'){
             return (
-                <TouchableOpacity onPress={()=>this._tab(item.id)}>
+                <TouchableOpacity onPress={()=>this._tab(item)}>
                 <View key={item.id}  style={styles.bookView}>
                      <View style={styles.last}>
                          <Image
@@ -52,18 +52,27 @@ class Main extends Component {
             )
         }
         return (
-            <TouchableOpacity onPress={()=>this._tab(item.id)}>
+            <TouchableOpacity onPress={()=>this._tab(item)}>
             <View key={item.id}  style={styles.bookView}>
                     <Image
                        source={require('../images/book-test.jpg')}
                        style={styles.bookImage}
                      />
-                    <Text style={styles.bookName}>{item.name}</Text>
-                    <Text style={styles.readInfo}>{item.readInfo}</Text>
+                    <Text style={styles.bookName} numberOfLines={1}>{item.name}</Text>
+                    <Text style={styles.readInfo}>{item.isRead?'阅读至第'+item.pid+'章':'尚未阅读'}</Text>
             </View>
             </TouchableOpacity>
         )
     }
+
+    componentWillReceiveProps(nextProps){
+        console.log(nextProps)
+    }
+
+    componentDidMount() {
+        this.props._getBookCase()
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -86,7 +95,8 @@ const styles = StyleSheet.create({
     },
     bookView:{
        marginTop:pxToDp(40),
-       marginLeft:pxToDp(45)
+       marginLeft:pxToDp(45),
+        width:pxToDp(300),
     },
     last:{
         backgroundColor:"white",
@@ -130,6 +140,9 @@ function mapDispatchToProps(dispatch){
         _handle:(options)=>{
             dispatch(actions.handle(options))
         },
+        _getBookCase:()=>{
+            dispatch(actions.getBookCase())
+        }
     }
 }
 

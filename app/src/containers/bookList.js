@@ -116,7 +116,6 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state){
-    console.log(state.bookList.list)
     return state;
 }
 

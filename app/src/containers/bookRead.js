@@ -23,6 +23,8 @@ import Slider from "react-native-slider";
 import * as actions from '../actions/bookRead';
 import pxToDp   from '../util/px';
 import readTemplate from '../util/readTemplate';
+const Realm = require('realm');
+import * as RM from '../util/realm';
 
 const bookStyleArray = [
     {
@@ -286,12 +288,24 @@ class Main extends Component {
         )
     }
 
-    //触摸页面，显示隐藏菜单
-    touchContent(){
-        this.props._handle({
-            showMenu:!this.props.bookRead.showMenu,
-            bottomNavModel:0
-        })
+    //触摸页面，显示隐藏菜单,请求上一章或下一章
+    touchContent(event){
+        switch(event.nativeEvent.data){
+            case "left"  :
+                if(this.props.bookRead.chapter!=1){
+                    this.getData(--this.props.bookRead.chapter)
+                }
+                break;
+            case "right" :
+                this.getData(++this.props.bookRead.chapter)
+                break;
+            default :
+                this.props._handle({
+                    showMenu:!this.props.bookRead.showMenu,
+                    bottomNavModel:0
+                })
+                break;
+        }
     }
 
     //底部菜单导功能
@@ -311,6 +325,10 @@ class Main extends Component {
                 })
                 break;
             case 4 :
+                this.props._downBook(
+                    this.props.navigation.state.params.id,
+                    this.props.bookRead.chapter
+                )
                 this.props._handle({
                     bottomNavModel:4
                 })
@@ -324,18 +342,46 @@ class Main extends Component {
     getData(pid){
         this.props._getBookDetails({
             id:this.props.navigation.state.params.id,
-            pid
+            pid,
+            isAdd:this.props.bookRead.isAdd
         })
     }
 
     componentDidMount() {
-        this.getData(1)
+        Realm.open({schema: [RM.BookSchema,RM.ContentSchema],schemaVersion: RM.version})
+            .then(realm => {
+                let book = realm.objects('Book').filtered('id = '+this.props.navigation.state.params.id);
+                if(book.length>0){
+                    this.props._handle({
+                        isAdd:true
+                    })
+                }else{
+                    this.props._handle({
+                        isAdd:false
+                    })
+                }
+                this.getData(this.props.navigation.state.params.pid)
+        });
+
     }
 
     componentWillUnmount(){
+        if(this.props.bookRead.isAdd){
+            Realm.open({schema: [RM.BookSchema,RM.ContentSchema],schemaVersion: RM.version})
+                .then(realm => {
+                    realm.write(() => {
+                        let book = realm.create('Book',{
+                            id:this.props.navigation.state.params.id,
+                            pid:this.props.bookRead.chapter,
+                            isRead:true
+                        },true);
+                    });
+            });
+        }
         this.props._handle({
             showMenu:false,
-            bottomNavModel:0
+            bottomNavModel:0,
+            content:'',
         })
     }
 
@@ -372,11 +418,12 @@ class Main extends Component {
                         automaticallyAdjustContentInsets={false}
                         style={styles.scroll}
                         source={{html: html}}
-                        onMessage={()=>this.touchContent()}
+                        onMessage={(e)=>this.touchContent(e)}
                         javaScriptEnabled={true}
                         domStorageEnabled={true}
                         decelerationRate="normal"
                         startInLoadingState={false}
+                        scrollEnabled={false}
                     />
                     {this.props.bookRead.showMenu&&this.showTop()}
                     {this.props.bookRead.showMenu&&this.showBottom()}
@@ -405,7 +452,7 @@ const styles = StyleSheet.create({
         bottom:0,
         backgroundColor:"transparent",
         paddingTop:pxToDp(150),
-        paddingBottom:pxToDp(150)
+        paddingBottom:pxToDp(100)
     },
     tabViews:{
         backgroundColor:"transparent"
@@ -563,6 +610,9 @@ function mapDispatchToProps(dispatch){
         _getBookDetails:(options)=>{
             dispatch(actions.getBookDetails(options))
         },
+        _downBook:(id,pid)=>{
+            dispatch(actions.downBook(id,pid))
+        }
     }
 }
 

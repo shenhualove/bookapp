@@ -4,6 +4,8 @@
  * 小说目录列表
  */
 import Fetch from '../util/fetch';
+const Realm = require('realm');
+import * as RM from '../util/realm';
 
 export function handle(data){
     return {
@@ -19,20 +21,31 @@ export function getChapter(options){
             loading:true
         }))
 
-        Fetch({
-            url:"getChapter",
-            type:"GET",
-            data:{
-                id:options.id
-            },
-            success:function(data){
-                if(data.status==1){
+        Realm.open({schema: [RM.BookSchema,RM.ContentSchema],schemaVersion: RM.version})
+            .then(realm => {
+                let book = realm.objects('Content').filtered('column = '+options.id);
+                if(book.length>0){
                     dispatch(handle({
-                        list:data.data,
+                        list:book,
                         loading:false
                     }))
+                }else{
+                    Fetch({
+                        url:"getChapter",
+                        type:"GET",
+                        data:{
+                            id:options.id
+                        },
+                        success:function(data){
+                            if(data.status==1){
+                                dispatch(handle({
+                                    list:data.data,
+                                    loading:false
+                                }))
+                            }
+                        }
+                    })
                 }
-            }
-        })
+        });
     }
 }

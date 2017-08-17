@@ -17,6 +17,7 @@ const initialSate = {
     lightVal:10,//屏幕亮度
     bottomNavModel:0,//默认0 为主界面，1为目录界面，2为文字设置，3为主题亮度，4为缓存下载
     language:false,//默认为简体，当为TRUE表示为繁体
+    isAdd:false,//是否已经加入书架，，默认不加入
 }
 
 function bookList(state = initialSate,action){

@@ -19,6 +19,8 @@ import {connect} from 'react-redux';
 import pxToDp   from '../util/px';
 import * as actions from '../actions/bookInfo';
 import BookListComponent from '../components/bookList';
+const Realm = require('realm');
+import * as RM from '../util/realm';
 
 class Main extends Component {
     static navigationOptions = ({navigation}) => ({
@@ -41,15 +43,40 @@ class Main extends Component {
 
     //阅读书籍
     readTab(){
-        this.props.navigation.navigate("BookRead",{
-            id:this.props.navigation.state.params.id,
-            name:this.props.navigation.state.params.name
-        })
+        Realm.open({schema: [RM.BookSchema,RM.ContentSchema],schemaVersion: RM.version})
+            .then(realm => {
+                realm.write(() => {
+                    let pid = 1;
+                    let book = realm.objects('Book').filtered('id = '+this.props.navigation.state.params.id);
+                    if(book.length>0){
+                        pid = book[0].pid
+                    }
+                    this.props.navigation.navigate("BookRead",{
+                        id:this.props.navigation.state.params.id,
+                        pid:1,
+                        name:this.props.navigation.state.params.name
+                    })
+                });
+        });
     }
 
     //加入书架
     addTab(){
-
+        Realm.open({schema: [RM.BookSchema,RM.ContentSchema],schemaVersion: RM.version})
+            .then(realm => {
+                realm.write(() => {
+                    let book = realm.objects('Book').filtered('id = '+this.props.navigation.state.params.id);
+                    if(book.length==0){
+                        realm.create('Book', {
+                            id:this.props.navigation.state.params.id,
+                            name:this.props.navigation.state.params.name,
+                            imgUrl:this.props.bookInfo.book.imgUrl,
+                            list:[]
+                        });
+                    }
+                    alert('已添加到书架')
+                });
+        });
     }
 
     _keyExtractor = (item, index) => item.id;

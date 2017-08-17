@@ -21,27 +21,32 @@ export default function readTemplate(content,width,fontSize,color){
                                 #wrap{
 
                                    box-sizing: border-box;
+                                   -webkit-box-sizing: border-box;
                                    width: 100%;
                                     height: 100%;
                                     overflow: hidden;
                                 }
                                 #content{
+
                                     padding:0 16px;
                                     box-sizing: border-box;
+                                    -webkit-box-sizing: border-box;
                                     -webkit-column-width: ${width}px;
-                                    -webkit-column-gap: 30px;
-                                    column-gap: 30px;
+                                    -webkit-column-gap: 32px;
+                                    column-gap: 32px;
                                     column-width:${width}px;
                                         transition: transform 400ms ease;
                                      transform: translate3d(0px, 0px, 0px);
                                      font-size: ${fontSize}px;
+                                     text-align: justify;
 
                                 }
 
                                 p{
                                     font-size: ${fontSize}px;
-                                    line-height: ${fontSize*2}px;
-                                    margin-bottom: ${fontSize}px;
+                                    line-height: ${fontSize*1.9}px;
+                                    font-weight: normal;
+                                    text-align: justify;
 
                                 }
                                 .swiper{
@@ -66,7 +71,7 @@ export default function readTemplate(content,width,fontSize,color){
                         <body>
                            <div id="wrap">
                            <div id="content">
-                            ${content}
+                            <p>${content}</p>
                            </div>
                            <div class="swiper">
                                 <div  id="swiper-left"></div>
@@ -82,21 +87,24 @@ export default function readTemplate(content,width,fontSize,color){
                                 content.style.color= '${color}';
                                 document.getElementById('swiper-left').addEventListener("click", function(){
                                        if(page==0){
+                                           window.postMessage("left");
                                            return false;
                                        }
                                        page--;
                                        content.style.transform = "translate3d(-"+(width*page)+"px, 0px, 0px)";
                                 });
                                 document.getElementById('swiper-center').addEventListener("click", function(){
-                                       window.postMessage();
+                                       window.postMessage("center");
                                 });
                                 document.getElementById('swiper-right').addEventListener("click", function(){
                                     if(page==length){
+                                        window.postMessage("right");
                                         return false;
                                     }
                                     page++;
                                     content.style.transform = "translate3d(-"+(width*page)+"px, 0px, 0px)";
                                 });
+
                             }
                         </script>
                         </body>
