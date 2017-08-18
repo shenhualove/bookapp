@@ -46,21 +46,21 @@ const styles = StyleSheet.create({
         flex:1
     },
     listName:{
-        fontSize:pxToDp(42),
+        fontSize:pxToDp(44),
         color:"#333",
         marginTop:pxToDp(4),
-        marginBottom:pxToDp(16)
+        marginBottom:pxToDp(14)
     },
     listInfo:{
-        fontSize:pxToDp(34),
+        fontSize:pxToDp(36),
         color:"#999",
         lineHeight:pxToDp(44),
         marginBottom:0,
     },
     listAuthor:{
-        fontSize:pxToDp(34),
+        fontSize:pxToDp(36),
         color:"#999",
-        marginBottom:pxToDp(16)
+        marginBottom:pxToDp(14)
     }
 
 });

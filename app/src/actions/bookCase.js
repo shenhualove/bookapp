@@ -18,7 +18,7 @@ export function getBookCase(){
     return dispatch => {
         Realm.open({schema: [RM.BookSchema,RM.ContentSchema],schemaVersion: RM.version})
             .then(realm => {
-                let list = realm.objects('Book');
+                let list = realm.objects('Book').sorted('date','DESCENDING');
                 let arr = [];
                 for(let i=0;i<list.length;i++){
                     arr.push(list[i])

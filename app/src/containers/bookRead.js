@@ -25,6 +25,7 @@ import pxToDp   from '../util/px';
 import readTemplate from '../util/readTemplate';
 const Realm = require('realm');
 import * as RM from '../util/realm';
+import * as caseActions from '../actions/bookCase';
 
 const bookStyleArray = [
     {
@@ -373,8 +374,12 @@ class Main extends Component {
                         let book = realm.create('Book',{
                             id:this.props.navigation.state.params.id,
                             pid:this.props.bookRead.chapter,
-                            isRead:true
+                            isRead:true,
+                            date:new Date()
                         },true);
+                        this.props._updateCase({
+                            isUpdate:true
+                        })
                     });
             });
         }
@@ -612,6 +617,9 @@ function mapDispatchToProps(dispatch){
         },
         _downBook:(id,pid)=>{
             dispatch(actions.downBook(id,pid))
+        },
+        _updateCase:(options)=>{
+            dispatch(caseActions.handle(options))
         }
     }
 }

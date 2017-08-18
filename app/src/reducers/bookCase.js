@@ -8,7 +8,8 @@ const initialSate = {
         {
             id:"last"
         }
-    ]
+    ],
+    isUpdate:false//触发更新书架信息
 }
 
 function bookCase(state = initialSate,action){

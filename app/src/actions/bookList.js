@@ -16,6 +16,7 @@ export function handle(data){
 export function getList(options){
     return dispatch => {
         if(options.text === 'up'){
+            options.nowPage=1;
             dispatch(handle({
                 isLoadUpdate:true
             }))

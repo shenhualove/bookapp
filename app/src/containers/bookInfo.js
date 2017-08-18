@@ -18,6 +18,7 @@ import {
 import {connect} from 'react-redux';
 import pxToDp   from '../util/px';
 import * as actions from '../actions/bookInfo';
+import * as caseActions from '../actions/bookCase';
 import BookListComponent from '../components/bookList';
 const Realm = require('realm');
 import * as RM from '../util/realm';
@@ -73,6 +74,9 @@ class Main extends Component {
                             imgUrl:this.props.bookInfo.book.imgUrl,
                             list:[]
                         });
+                        this.props._updateCase({
+                            isUpdate:true
+                        })
                     }
                     alert('已添加到书架')
                 });
@@ -267,6 +271,9 @@ function mapDispatchToProps(dispatch){
         },
         _getLove:(options)=>{
             dispatch(actions.getLove(options))
+        },
+        _updateCase:(options)=>{
+            dispatch(caseActions.handle(options))
         }
     }
 }

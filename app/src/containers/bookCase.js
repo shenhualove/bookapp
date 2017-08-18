@@ -66,7 +66,13 @@ class Main extends Component {
     }
 
     componentWillReceiveProps(nextProps){
-        console.log(nextProps)
+        if(nextProps.bookCase.isUpdate){
+            this.props._getBookCase();
+            this.props._handle({
+                isUpdate:false
+            })
+            console.log('更新书架');
+        }
     }
 
     componentDidMount() {

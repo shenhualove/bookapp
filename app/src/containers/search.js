@@ -64,7 +64,7 @@ class Main extends Component {
         }
     }
 
-    _keyExtractor = (item, index) => item.id+index;
+    _keyExtractor = (item, index) => item.id;
 
     //渲染热门推荐书籍数据
     _renderItem = ({item})=>{
