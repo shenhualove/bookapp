@@ -6,7 +6,7 @@
 const Realm = require('realm');
 
 //模型版本号
-export const version = 4;
+export const version = 6;
 
 //本地缓存小说
 export const BookSchema = {
@@ -39,7 +39,9 @@ export const ContentSchema = {
 //本地小说阅读页设置
 export const SettingSchema = {
     name: 'Setting',
+    primaryKey: 'id',
     properties: {
+        id:'string',
         backStyle:{type: 'int'},
         fontSizeVal:{type: 'int'},
         lightVal:{type: 'int'},

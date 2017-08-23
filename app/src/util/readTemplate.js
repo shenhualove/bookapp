@@ -85,7 +85,7 @@ export default function readTemplate(content,width,fontSize,color){
                                 var content = document.getElementById('content');
                                 var page = 0,width = ${width},length = parseInt(content.scrollWidth/${width});
                                 content.style.color= '${color}';
-                                document.getElementById('swiper-left').addEventListener("click", function(){
+                                document.getElementById('swiper-left').addEventListener("touchstart", function(){
                                        if(page==0){
                                            window.postMessage("left");
                                            return false;
@@ -93,10 +93,10 @@ export default function readTemplate(content,width,fontSize,color){
                                        page--;
                                        content.style.transform = "translate3d(-"+(width*page)+"px, 0px, 0px)";
                                 });
-                                document.getElementById('swiper-center').addEventListener("click", function(){
+                                document.getElementById('swiper-center').addEventListener("touchstart", function(){
                                        window.postMessage("center");
                                 });
-                                document.getElementById('swiper-right').addEventListener("click", function(){
+                                document.getElementById('swiper-right').addEventListener("touchstart", function(){
                                     if(page==length){
                                         window.postMessage("right");
                                         return false;

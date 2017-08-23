@@ -9,7 +9,6 @@ import configureStore from './store/configureStore';
 const store = configureStore();
 import App from './containers/app';
 
-
 class Root extends Component {
     render() {
         return (

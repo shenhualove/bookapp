@@ -21,7 +21,7 @@ export function getChapter(options){
             loading:true
         }))
 
-        Realm.open({schema: [RM.BookSchema,RM.ContentSchema],schemaVersion: RM.version})
+        Realm.open({schema: [RM.BookSchema,RM.ContentSchema,RM.SettingSchema],schemaVersion: RM.version})
             .then(realm => {
                 let book = realm.objects('Content').filtered('column = '+options.id);
                 if(book.length>0){

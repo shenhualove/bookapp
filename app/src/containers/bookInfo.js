@@ -23,6 +23,7 @@ import BookListComponent from '../components/bookList';
 const Realm = require('realm');
 import * as RM from '../util/realm';
 
+
 class Main extends Component {
     static navigationOptions = ({navigation}) => ({
         headerStyle:{
@@ -63,7 +64,7 @@ class Main extends Component {
 
     //加入书架
     addTab(){
-        Realm.open({schema: [RM.BookSchema,RM.ContentSchema],schemaVersion: RM.version})
+        Realm.open({schema: [RM.BookSchema,RM.ContentSchema,RM.SettingSchema],schemaVersion: RM.version})
             .then(realm => {
                 realm.write(() => {
                     let book = realm.objects('Book').filtered('id = '+this.props.navigation.state.params.id);
@@ -78,7 +79,7 @@ class Main extends Component {
                             isUpdate:true
                         })
                     }
-                    alert('已添加到书架')
+                    alert('已经添加到书架')
                 });
         });
     }
@@ -159,6 +160,7 @@ class Main extends Component {
                         renderItem={this._renderItem}
                         />
                 </View>
+
             </ScrollView>
         );
     }

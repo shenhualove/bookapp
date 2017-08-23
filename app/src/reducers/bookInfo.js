@@ -3,7 +3,11 @@
  */
 const initialSate = {
     book:{},
-    loveList:[]
+    loveList:[],
+    dialog:{
+        show:false,
+        content:''
+    }
 }
 
 function bookInfo(state = initialSate,action){

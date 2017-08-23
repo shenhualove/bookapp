@@ -23,7 +23,7 @@ export function getBookDetails(options){
         }))
 
         if(options.isAdd){
-            Realm.open({schema: [RM.BookSchema,RM.ContentSchema],schemaVersion: RM.version})
+            Realm.open({schema: [RM.BookSchema,RM.ContentSchema,RM.SettingSchema],schemaVersion: RM.version})
                 .then(realm => {
                     let book = realm.objects('Content').filtered(
                         'column = '+options.id+' AND pid = '+options.pid

@@ -349,9 +349,11 @@ class Main extends Component {
     }
 
     componentDidMount() {
-        Realm.open({schema: [RM.BookSchema,RM.ContentSchema],schemaVersion: RM.version})
+        Realm.open({schema: [RM.BookSchema,RM.ContentSchema,RM.SettingSchema],schemaVersion: RM.version})
             .then(realm => {
                 let book = realm.objects('Book').filtered('id = '+this.props.navigation.state.params.id);
+                let set  = realm.objects('Setting').filtered('id = "setting"');
+                //判断书籍是否已经加入过书架
                 if(book.length>0){
                     this.props._handle({
                         isAdd:true
@@ -361,27 +363,48 @@ class Main extends Component {
                         isAdd:false
                     })
                 }
+                //读取阅读样式设置
+                if(set.length>0){
+                    this.props._handle({
+                        backStyle:set[0].backStyle,
+                        fontSizeVal:set[0].fontSizeVal,
+                        lightVal:set[0].lightVal
+                    })
+                }
                 this.getData(this.props.navigation.state.params.pid)
         });
-
     }
 
     componentWillUnmount(){
         if(this.props.bookRead.isAdd){
-            Realm.open({schema: [RM.BookSchema,RM.ContentSchema],schemaVersion: RM.version})
+            Realm.open({schema: [RM.BookSchema,RM.ContentSchema,RM.SettingSchema],schemaVersion: RM.version})
                 .then(realm => {
                     realm.write(() => {
-                        let book = realm.create('Book',{
+                        realm.create('Book',{
                             id:this.props.navigation.state.params.id,
                             pid:this.props.bookRead.chapter,
                             isRead:true,
                             date:new Date()
                         },true);
+
+                        realm.create('Setting',{
+                            id:'setting',
+                            backStyle:this.props.bookRead.backStyle,
+                            fontSizeVal:this.props.bookRead.fontSizeVal,
+                            lightVal:this.props.bookRead.lightVal
+                        },true);
+
                         this.props._updateCase({
                             isUpdate:true
                         })
                     });
             });
+            /*Realm.open({schema: [RM.SettingSchema],schemaVersion: RM.version})
+                .then(realm => {
+                    realm.write(() => {
+
+                    });
+            });*/
         }
         this.props._handle({
             showMenu:false,

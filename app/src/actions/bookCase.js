@@ -16,7 +16,7 @@ export function handle(data){
 //获取本地书架列表
 export function getBookCase(){
     return dispatch => {
-        Realm.open({schema: [RM.BookSchema,RM.ContentSchema],schemaVersion: RM.version})
+        Realm.open({schema: [RM.BookSchema,RM.ContentSchema,RM.SettingSchema],schemaVersion: RM.version})
             .then(realm => {
                 let list = realm.objects('Book').sorted('date','DESCENDING');
                 let arr = [];
