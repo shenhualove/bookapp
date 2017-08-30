@@ -399,12 +399,6 @@ class Main extends Component {
                         })
                     });
             });
-            /*Realm.open({schema: [RM.SettingSchema],schemaVersion: RM.version})
-                .then(realm => {
-                    realm.write(() => {
-
-                    });
-            });*/
         }
         this.props._handle({
             showMenu:false,
@@ -423,6 +417,7 @@ class Main extends Component {
             this.props.bookRead.fontSizeVal,
             textStyle.color
         )
+        console.log(html)
         return (
             <View style={styles.container}>
                 <StatusBar
@@ -453,9 +448,9 @@ class Main extends Component {
                         startInLoadingState={false}
                         scrollEnabled={false}
                     />
-                    {this.props.bookRead.showMenu&&this.showTop()}
-                    {this.props.bookRead.showMenu&&this.showBottom()}
                 </View>
+                {this.props.bookRead.showMenu&&this.showTop()}
+                {this.props.bookRead.showMenu&&this.showBottom()}
             </View>
         );
     }

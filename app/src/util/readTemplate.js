@@ -71,7 +71,7 @@ export default function readTemplate(content,width,fontSize,color){
                         <body>
                            <div id="wrap">
                            <div id="content">
-                            <p>${content}</p>
+                            <p>${content}444</p>
                            </div>
                            <div class="swiper">
                                 <div  id="swiper-left"></div>
@@ -80,12 +80,13 @@ export default function readTemplate(content,width,fontSize,color){
                             </div>
                            </div>
                            <script>
+
                             window.onload=function(){
 
                                 var content = document.getElementById('content');
                                 var page = 0,width = ${width},length = parseInt(content.scrollWidth/${width});
                                 content.style.color= '${color}';
-                                document.getElementById('swiper-left').addEventListener("touchstart", function(){
+                                document.getElementById('swiper-left').addEventListener("click", function(){
                                        if(page==0){
                                            window.postMessage("left");
                                            return false;
@@ -93,10 +94,10 @@ export default function readTemplate(content,width,fontSize,color){
                                        page--;
                                        content.style.transform = "translate3d(-"+(width*page)+"px, 0px, 0px)";
                                 });
-                                document.getElementById('swiper-center').addEventListener("touchstart", function(){
+                                document.getElementById('swiper-center').addEventListener("click", function(){
                                        window.postMessage("center");
                                 });
-                                document.getElementById('swiper-right').addEventListener("touchstart", function(){
+                                document.getElementById('swiper-right').addEventListener("click", function(){
                                     if(page==length){
                                         window.postMessage("right");
                                         return false;

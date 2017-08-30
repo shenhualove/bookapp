@@ -45,7 +45,7 @@ class Main extends Component {
 
     //阅读书籍
     readTab(){
-        Realm.open({schema: [RM.BookSchema,RM.ContentSchema],schemaVersion: RM.version})
+        Realm.open({schema: [RM.BookSchema,RM.ContentSchema,RM.SettingSchema],schemaVersion: RM.version})
             .then(realm => {
                 realm.write(() => {
                     let pid = 1;
